@@ -1,0 +1,33 @@
+# .env files
+.env
+.env.production
+.env.development
+
+# Node
+node_modules/
+dist/
+build/
+coverage/
+
+# Dotnet
+bin/
+obj/
+*.user
+.vscode/
+
+# Java
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.classpath
+.project
+.settings/
+HELP.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Github
+.github
