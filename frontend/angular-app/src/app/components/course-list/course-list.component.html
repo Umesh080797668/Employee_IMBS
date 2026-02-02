@@ -1,0 +1,78 @@
+<div class="container mt-4">
+  <div style="background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; font-weight: bold; margin: 0;">Available Courses</h2>
+    <button (click)="addCourse()" style="padding: 0.8rem 1.5rem; background: linear-gradient(90deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s;"
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 10px rgba(0,0,0,0.2)'"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)'">
+      Add Course
+    </button>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+    <div *ngFor="let course of courses; let i = index" 
+         [style.background]="getGradient(i)"
+         style="border-radius: 1rem; padding: 2rem; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s; cursor: pointer;"
+         onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.4)'"
+         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.3)'">
+      <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">{{ course.courseName }}</h3>
+      <p style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">{{ course.description }}</p>
+      <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.5rem;">
+        <p style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <strong>Duration:</strong> {{ course.duration }}
+        </p>
+        <p style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <strong>Fee:</strong> {{ course.fee | currency }}
+        </p>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <button (click)="openEnrollModal(course)" 
+                style="flex: 1; padding: 0.8rem; background: white; color: #667eea; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
+                onmouseover="this.style.transform='scale(1.05)'"
+                onmouseout="this.style.transform='scale(1)'">
+          Enroll
+        </button>
+        <button (click)="editCourse(course.courseId!)" 
+                style="flex: 1; padding: 0.8rem; background: rgba(255, 255, 255, 0.3); color: white; border: 1px solid white; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s;"
+                onmouseover="this.style.background='rgba(255, 255, 255, 0.5)'"
+                onmouseout="this.style.background='rgba(255, 255, 255, 0.3)'">
+          Edit
+        </button>
+        <button (click)="deleteCourse(course.courseId!)" 
+                style="flex: 1; padding: 0.8rem; background: rgba(239, 68, 68, 0.8); color: white; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s;"
+                onmouseover="this.style.background='rgba(220, 38, 38, 1)'"
+                onmouseout="this.style.background='rgba(239, 68, 68, 0.8)'">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enrollment Modal -->
+  <div *ngIf="showEnrollModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 2rem; border-radius: 1rem; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+      <h3 style="margin-top: 0; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: bold; color: #4a5568;">Enroll in {{ selectedCourseForEnrollment?.courseName }}</h3>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #4a5568;">Select Student</label>
+        <select [(ngModel)]="selectedStudentId" style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 0.5rem; font-size: 1rem;">
+          <option [ngValue]="null">-- Select Student --</option>
+          <option *ngFor="let student of students" [ngValue]="student.studentId">
+            {{ student.fullName }}
+          </option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <button (click)="confirmEnrollment()" [disabled]="!selectedStudentId"
+                style="flex: 1; padding: 0.8rem; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s;"
+                [style.opacity]="selectedStudentId ? '1' : '0.5'">
+          Confirm
+        </button>
+        <button (click)="closeEnrollModal()" 
+                style="flex: 1; padding: 0.8rem; background: #718096; color: white; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer;">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="header">
+      <h2 class="title">Student Enrollments</h2>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Enrollment ID</th>
+            <th>Student Name</th>
+            <th>Course Name</th>
+            <th>Date</th>
+            <th>Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let enrollment of enrollments; let i = index">
+            <td>#{{ enrollment.id }}</td>
+            <td>
+              <strong style="color: #2d3748;">{{ getStudentName(enrollment.studentId) }}</strong>
+            </td>
+            <td>
+              <span class="badge">{{ enrollment.course.courseName }}</span>
+            </td>
+            <td>{{ enrollment.enrollmentDate | date:'mediumDate' }}</td>
+            <td>{{ enrollment.course.fee | currency }}</td>
+          </tr>
+          <tr *ngIf="enrollments.length === 0">
+            <td colspan="5" style="text-align: center; padding: 3rem; color: #a0aec0;">
+              No enrollments found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

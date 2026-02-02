@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div style="background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; font-weight: bold; margin: 0;">Student List</h2>
+    <a routerLink="/add-student" mat-raised-button style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s;">➕ Add Student</a>
+  </div>
+  
+  <div style="background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    <table mat-table [dataSource]="students" class="mat-elevation-z8 w-full">
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="studentId">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">ID</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem; font-weight: 600; color: #667eea;"> {{element.studentId}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">Full Name</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem; font-weight: 500; color: #1f2937;"> {{element.fullName}} </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">Email</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem; color: #4b5563;"> {{element.email}} </td>
+      </ng-container>
+
+      <!-- DOB Column -->
+      <ng-container matColumnDef="dateOfBirth">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">Date of Birth</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem; color: #4b5563;"> {{element.dateOfBirth | date}} </td>
+      </ng-container>
+
+      <!-- Contact Column -->
+      <ng-container matColumnDef="contactNumber">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">Contact</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem; color: #4b5563;"> {{element.contactNumber}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; padding: 1rem;">Actions</th>
+        <td mat-cell *matCellDef="let element" style="padding: 1rem;">
+          <a [routerLink]="['/edit-student', element.studentId]" mat-button style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; margin-right: 0.5rem; border-radius: 0.5rem; font-weight: 600;">Edit</a>
+          <button mat-button (click)="deleteStudent(element.studentId)" style="background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); color: white; border-radius: 0.5rem; font-weight: 600;">Delete</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f3f4f6'" onmouseout="this.style.backgroundColor='white'"></tr>
+    </table>
+  </div>
+</div>
