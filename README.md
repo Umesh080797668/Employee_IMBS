@@ -113,17 +113,41 @@ cd backend/springboot-api
 
 ## Configuration & Customization
 
-You can customize the application by editing the following configuration files.
+### Environment Variables (.env Files)
 
-### 1. Environment Variables (.env)
-*Note: This project primarily uses `docker-compose.yml` for environment variables when running in Docker.*
+Since `.env` files are excluded from git for security, **you must create them manually** if you are running the application locally (without Docker).
 
-**Key Configurations to Check:**
-- `DB_CONNECTION_STRING`
-- `JWT_SECRET`
-- `ALLOWED_ORIGINS`
+#### 1. React Frontend (.env)
+**Location:** `frontend/react-app/.env`
+Create this file to define API endpoints for the React application.
 
-### 2. File-Specific Configurations
+```dotenv
+VITE_STUDENT_API_URL=http://localhost:5038/api/Students
+VITE_COURSE_API_URL=http://localhost:8081/api/courses
+VITE_AUTH_LOGIN_URL=http://localhost:5038/api/auth/login
+```
+
+#### 2. .NET API Backend (.env)
+**Location:** `backend/dotnet-api/.env`
+Required for database connection and JWT security.
+
+```dotenv
+DB_CONNECTION_STRING=Server=localhost;Database=StudentDB;User Id=sa;Password=your_password;TrustServerCertificate=True;
+JWT_SECRET=your_super_secret_key_at_least_32_chars_long
+```
+
+#### 3. Spring Boot API Backend (.env)
+**Location:** `backend/springboot-api/.env`
+Required for database connection.
+
+```dotenv
+JWT_SECRET=your_super_secret_key_at_least_32_chars_long
+DB_URL=jdbc:mysql://localhost:3306/CourseDB
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+### File-Specific Configurations
 
 If you are running locally or need to change API endpoints/database settings, edit these files:
 
@@ -164,10 +188,10 @@ SQL Scripts located in `/database-scripts` are automatically executed by Docker 
 
 | Service | Application | URL |
 |---------|-------------|-----|
-| **Frontend** | Angular App (Student Portal) | [http://localhost:4200](http://localhost:4200) |
-| **Frontend** | React App (Course Portal) | [http://localhost:5173](http://localhost:5173) |
-| **Backend** | .NET API (Swagger UI) | [http://localhost:5038/swagger](http://localhost:5038/swagger) |
-| **Backend** | Spring Boot API | [http://localhost:8081](http://localhost:8081) |
+| **Frontend** | Angular App | [http://localhost:4200](http://localhost:4200) |
+| **Frontend** | React App | [http://localhost:5173](http://localhost:5173) |
+| **Backend** | .NET API (Student API) | [http://localhost:5038](http://localhost:5038) |
+| **Backend** | Spring Boot API (Course API / Enrollment API) | [http://localhost:8081](http://localhost:8081) |
 | **Database** | SQL Server (Host Port) | `localhost:1435` |
 | **Database** | MySQL (Host Port) | `localhost:3307` |
 
